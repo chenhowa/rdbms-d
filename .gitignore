@@ -1,0 +1,14 @@
+.dub
+docs.json
+__dummy.html
+docs/
+rdbms.so
+rdbms.dylib
+rdbms.dll
+rdbms.a
+rdbms.lib
+rdbms-test-*
+*.exe
+*.o
+*.obj
+*.lst
