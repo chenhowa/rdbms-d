@@ -1,4 +1,5 @@
-
+import i_in_byte_stream;
+import i_out_byte_stream;
 
 
 
@@ -10,15 +11,15 @@
 interface IBuffer {
     uint readFrom(IBuffer buffer);
     uint writeTo(IBuffer buffer);
-    uint readFrom(IInStream input);
-    uint writeTo(IOutStream output);
+    uint readFrom(IInByteStream input);
+    uint writeTo(IOutByteStream output);
+    bool readFrom(byte b);
     byte peekFront();
     byte getFront();
-    void put(ref byte b);
-
-    byte[] getBytes();
+    bool put(ref byte b);
 
     uint getCapacity();
+    uint getCount();
 
     bool isEmpty();
 
