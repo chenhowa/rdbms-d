@@ -8,7 +8,7 @@ rdbms.dll
 rdbms.a
 rdbms.lib
 rdbms-test-*
-rdbms
+./rdbms
 *.exe
 *.o
 *.obj
