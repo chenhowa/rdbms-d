@@ -11,6 +11,7 @@ class FileScan : IIterator {
         string file;
         ITupleLayout layout;
         File handle;
+        ITuple tuple;
     }
 
     this(string filename) {
@@ -36,6 +37,7 @@ class FileScan : IIterator {
     ITuple next() {
         // Should inject a factory to produce the correct.
         // ITuples from the file?
+        return tuple;
     }
 
     ITupleLayout getLayout() {
