@@ -1,0 +1,7 @@
+
+
+
+
+interface IStringable {
+    string toString();
+}
