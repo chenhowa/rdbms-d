@@ -5,6 +5,7 @@ import global_filesystem : g_filesystem;
 import i_filesystem;
 import stream_state : StreamState;
 import std.string : indexOf;
+import template_string : String;
 
 version(unittest) {
     import filesystem;
@@ -28,7 +29,7 @@ struct FileState {
         bool openbit;
         string name;
         IFileSystem fs;
-        string file;
+        String!char file;
         string mode;
         ulong position;
     }
@@ -58,7 +59,7 @@ struct FileState {
 
     }
 
-    void setFile(ref string f) {
+    void setFile(String!char f) {
         file = f;
     }
 
@@ -130,7 +131,7 @@ struct FileState {
         } else {
             openbit = false;
             name = "";
-            file = "";
+            file = new String!char();
         }
     }
 

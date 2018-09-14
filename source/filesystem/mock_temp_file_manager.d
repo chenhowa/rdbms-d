@@ -7,6 +7,7 @@ import i_out_byte_stream;
 import i_in_byte_stream;
 import std.conv;
 import global_filesystem : g_filesystem;
+import template_string;
 
 import mock_byte_writer;
 import mock_byte_reader;
@@ -14,7 +15,7 @@ import mock_byte_reader;
 class MockTempFileManager : ITempFileManager {
     private {
         IFileSystem fs;
-        string[ulong] tmpfiles;
+        String!char[ulong] tmpfiles;
     }
 
     this() {

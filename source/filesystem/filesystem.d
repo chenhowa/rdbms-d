@@ -3,11 +3,11 @@
 
 import i_filesystem;
 import assert_utils;
-
+import template_string : String;
 
 class FileSystem : IFileSystem {
     private {
-        string[string] lookup;
+        String!char[string] lookup;
     }
 
     this() {
@@ -37,7 +37,7 @@ class FileSystem : IFileSystem {
     }
 
     bool existsFile(string name) {
-        string* p = (name in lookup);
+        String!char* p = (name in lookup);
         return p !is null;
     }
 
@@ -55,7 +55,8 @@ class FileSystem : IFileSystem {
 
     bool createFile(string name) {
         if( !(name in lookup) ) {
-            lookup.require(name, "");
+            auto val = new String!char();
+            lookup.require(name, val);
             return true;
         }
 
@@ -93,7 +94,7 @@ class FileSystem : IFileSystem {
         return true;
     }
 
-    bool setFile(string name, string contents) {
+    bool setFile(string name, String!char contents) {
         if(!existsFile(name) ) {
             return false;
         }
@@ -105,22 +106,22 @@ class FileSystem : IFileSystem {
 
     unittest {
         FileSystem fs = new FileSystem();
-        string name = "name";
-        string val = "val";
+        auto name = "name";
+        auto val = new String!char("val");
         fs.createFile(name);
-        fs.setFile(name, val);
+        fs.setFile(name, val.dup);
         actualEqualsExpected(fs.getFile(name), val);
     }
 
-    string getFile(string name) {
+    String!char getFile(string name) {
         if(!existsFile(name)) {
-            return "";
+            throw new Exception("File does not exist");
         }
 
         return lookup[name];
     }
 
-    bool appendToFile(string name, string contents) {
+    bool appendToFile(string name, String!char contents) {
         if( !existsFile(name) ) {
             return false;
         }
@@ -133,11 +134,29 @@ class FileSystem : IFileSystem {
     unittest {
         FileSystem fs = new FileSystem();
         string name = "name";
-        string val = "val";
-        string val2 = "2";
+        auto val = new String!char("val");
+        auto val2 = new String!char("2");
         fs.createFile(name);
-        fs.setFile(name, val);
+        fs.setFile(name, val.dup);
         fs.appendToFile(name, val2);
         actualEqualsExpected(fs.getFile(name), val ~ val2);
+    }
+
+    unittest {
+        // Test that filesystem can be edited by other objects
+        FileSystem fs = new FileSystem();
+        string name = "name";
+        auto val = new String!char("test");
+        auto val2 = new String!char("2");
+        fs.createFile(name);
+        fs.setFile(name, val.dup);
+
+        auto refToFile = fs.getFile(name);
+        actualEqualsExpected(refToFile, val);
+
+        refToFile.append(val2);
+        actualEqualsExpected(refToFile, val ~ val2);
+        assertEqual(refToFile, fs.getFile(name));
+
     }
 }

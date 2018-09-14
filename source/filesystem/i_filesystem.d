@@ -1,6 +1,7 @@
 
 
-
+import std.array : RefAppender;
+import template_string : String;
 
 interface IFileSystem {
     void reset();
@@ -9,7 +10,7 @@ interface IFileSystem {
     bool createFile(string name);
     bool deleteFile(string name);
     bool renameFile(string name, string newName);
-    bool setFile(string name, string contents);
-    string getFile(string name);
-    bool appendToFile(string name, string contents);
+    bool setFile(string name, String!char contents);
+    String!char getFile(string name);
+    bool appendToFile(string name, String!char contents);
 }

@@ -7,6 +7,8 @@ import file_state : FileState;
 
 import global_filesystem : g_filesystem;
 
+import template_string : String;
+
 
 class MockByteWriter : IByteWriter {
 private {
@@ -19,7 +21,7 @@ this() {
     f_state = FileState(5);
 }
 
-this(ref string file) {
+this(String!char file) {
     s_state = StreamState(5);
     f_state = FileState(5);
     f_state.setFile(file);

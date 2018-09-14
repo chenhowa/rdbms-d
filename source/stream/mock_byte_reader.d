@@ -4,7 +4,7 @@ import i_byte_reader : IByteReader;
 import stream_state : StreamState;
 import file_state : FileState;
 import f_utils = file_utils;
-
+import template_string;
 
 
 class MockByteReader : IByteReader {
@@ -19,7 +19,7 @@ this() {
     f_state = FileState(5);
 }
 
-this(ref string file) {
+this(String!char file) {
     s_state = StreamState(5);
     f_state = FileState(5);
     f_state.setFile(file);
