@@ -7,6 +7,7 @@ import i_buffer;
 import i_in_byte_stream;
 import i_out_byte_stream;
 import assert_utils;
+import i_tuple;
 
 import std.stdio : writeln;
 
@@ -175,13 +176,14 @@ class Buffer : IBuffer {
         actualEqualsExpected(buffer.getCount(), size);
         assertTrue(buffer.isFull());
 
-        other.readFrom(buffer);
+        uint bytes_read = other.readFrom(buffer);
         actualEqualsExpected(other.getCount(), size);
         for(uint i = 0; i < size; i++) {
             actualEqualsExpected(other[i], val);
         }
         assertTrue(buffer.isEmpty());
         assertFalse(other.isFull());
+        actualEqualsExpected(bytes_read, size);
     }
 
     private void _nextReadIndex() {
@@ -209,13 +211,14 @@ class Buffer : IBuffer {
         actualEqualsExpected(buffer.getCount(), size);
         assertTrue(buffer.isFull());
 
-        buffer.writeTo(other);
+        uint bytes_written = buffer.writeTo(other);
         actualEqualsExpected(other.getCount(), size);
         for(uint i = 0; i < size; i++) {
             actualEqualsExpected(other[i], val);
         }
         assertTrue(buffer.isEmpty());
         assertFalse(other.isFull());
+        assertEqual(bytes_written, size);
     }
 
     uint readFrom(IInByteStream input) {
@@ -256,6 +259,19 @@ class Buffer : IBuffer {
         assertTrue(buffer.isCount(1));
         actualEqualsExpected(buffer[0], val);
     }
+
+    uint readFrom(ITuple tuple) {
+        uint bytes_read = 0;
+        while(!isFull() && (bytes_read < tuple.getByteLength()) ) {
+            buffer[readIndex] = tuple.getByte(bytes_read);
+            _nextReadIndex();
+            _incCount();
+            bytes_read += 1;
+        }
+
+        return bytes_read;
+    }
+
 
     byte peekFront() {
         return buffer[writeIndex];
@@ -314,6 +330,17 @@ class Buffer : IBuffer {
         byte b = val / 2;
         buffer.put(b);
         actualEqualsExpected(b, 10);
+    }
+
+    uint discard(uint num_bytes) {
+        uint bytes_discarded = 0;
+        while(!isEmpty()) {
+            _nextWriteIndex();
+            _decCount();
+            bytes_discarded += 1;
+        }
+
+        return bytes_discarded;
     }
 
     uint getCapacity() {

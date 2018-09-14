@@ -1,5 +1,6 @@
 import i_in_byte_stream;
 import i_out_byte_stream;
+import i_tuple;
 
 
 
@@ -14,9 +15,12 @@ interface IBuffer {
     uint readFrom(IInByteStream input);
     uint writeTo(IOutByteStream output);
     bool readFrom(byte b);
+    uint readFrom(ITuple tuple);
     byte peekFront();
     byte getFront();
     bool put(ref byte b);
+
+    uint discard(uint num_bytes);
 
     uint getCapacity();
     uint getCount();
