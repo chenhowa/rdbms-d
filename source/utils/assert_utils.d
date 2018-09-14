@@ -1,7 +1,6 @@
 
 
 import std.traits;
-import i_stringable;
 import std.conv;
 
 
@@ -32,4 +31,14 @@ void assertTrue(bool cond) {
 
 void assertFalse(bool cond) {
     actualEqualsExpected(cond, false);
+}
+
+void assertThrow() {
+    // TODO : WRITE A TEMPLATE THAT ACCEPTS ANY FUNCTION
+    // CALLS IT, and FAILS ONLY IF THE FUNCTION doesn't THROW
+}
+
+void assertNoThrow() {
+    // TODO : WRITE A TEMPLATE THAT ACCEPTS ANY FUNCTION
+    // CALLS IT, and FAILS ONLY IF THE FUNCTION THROWS
 }
