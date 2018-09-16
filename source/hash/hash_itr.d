@@ -74,6 +74,10 @@ class HashItr : IIterator {
         // involved for the buffers.
     }
 
+    unittest {
+        
+    }
+
     ITuple next() {
         // if the hash table is empty, read in the next
         // set of values to hash one by one from the file,
