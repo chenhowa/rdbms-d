@@ -43,6 +43,10 @@ void append(String!T other) {
     append(other.str);
 }
 
+void append(T element) {
+    append([element]);
+}
+
 unittest {
     char[] chars = ['a'];
     char[] chars2 = ['b', 'c'];
@@ -64,6 +68,10 @@ void prepend(T[] arr) {
 
 void prepend(String!T other) {
     prepend(other.str);
+}
+
+void prepend(T element) {
+    prepend([element]);
 }
 
 unittest {
@@ -177,9 +185,30 @@ override string toString() const pure @safe {
     return app.data;
 }
 
+bool empty() {
+    return str.length == 0;
+}
+
+void set(immutable(T)[] contents) {
+    str = contents.dup;
+}
+
+void set(T[] contents) {
+    str = contents.dup;
+}
+
+T opIndex(size_t index) {
+    return str[index];
+}
+
+void opIndexAssign(T val, size_t index) {
+    str[index] = val;
 }
 
 
+
+
+}
 
 unittest {
     String!char test = new String!char();
