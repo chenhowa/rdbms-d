@@ -7,7 +7,7 @@ import template_string : String;
 
 class FileSystem : IFileSystem {
     private {
-        String!char[string] lookup;
+        String!byte[string] lookup;
     }
 
     this() {
@@ -19,7 +19,7 @@ class FileSystem : IFileSystem {
         actualEqualsExpected(fs.getNumFiles(), 0);
     }
 
-    void reset() {
+    override void reset() {
         lookup.clear();
     }
 
@@ -32,12 +32,12 @@ class FileSystem : IFileSystem {
         actualEqualsExpected(fs.getNumFiles(), 0);
     }
 
-    ulong getNumFiles() {
+    override ulong getNumFiles() {
         return lookup.length;
     }
 
-    bool existsFile(string name) {
-        String!char* p = (name in lookup);
+    override bool existsFile(string name) {
+        String!byte* p = (name in lookup);
         return p !is null;
     }
 
@@ -53,9 +53,9 @@ class FileSystem : IFileSystem {
         assertTrue(fs.existsFile(newname));
     }
 
-    bool createFile(string name) {
+    override bool createFile(string name) {
         if( !(name in lookup) ) {
-            auto val = new String!char();
+            auto val = new String!byte();
             lookup.require(name, val);
             return true;
         }
@@ -63,7 +63,7 @@ class FileSystem : IFileSystem {
         return false;
     }
 
-    bool deleteFile(string name) {
+    override bool deleteFile(string name) {
         if( existsFile(name ) ) {
             lookup.remove(name);
             return true;
@@ -83,7 +83,7 @@ class FileSystem : IFileSystem {
         actualEqualsExpected(fs.getNumFiles(), 0);
     }
 
-    bool renameFile(string name, string newName) {
+    override bool renameFile(string name, string newName) {
         if(!existsFile(name) || existsFile(newName)) {
             return false;
         }
@@ -94,7 +94,7 @@ class FileSystem : IFileSystem {
         return true;
     }
 
-    bool setFile(string name, String!char contents) {
+    override bool setFile(string name, String!byte contents) {
         if(!existsFile(name) ) {
             return false;
         }
@@ -107,13 +107,13 @@ class FileSystem : IFileSystem {
     unittest {
         FileSystem fs = new FileSystem();
         auto name = "name";
-        auto val = new String!char("val");
+        auto val = new String!byte(cast(byte[])"val");
         fs.createFile(name);
         fs.setFile(name, val.dup);
         actualEqualsExpected(fs.getFile(name), val);
     }
 
-    String!char getFile(string name) {
+    override String!byte getFile(string name) {
         if(!existsFile(name)) {
             throw new Exception("File does not exist");
         }
@@ -121,7 +121,7 @@ class FileSystem : IFileSystem {
         return lookup[name];
     }
 
-    bool appendToFile(string name, String!char contents) {
+    override bool appendToFile(string name, String!byte contents) {
         if( !existsFile(name) ) {
             return false;
         }
@@ -134,8 +134,8 @@ class FileSystem : IFileSystem {
     unittest {
         FileSystem fs = new FileSystem();
         string name = "name";
-        auto val = new String!char("val");
-        auto val2 = new String!char("2");
+        auto val = new String!byte(cast(byte[])"val");
+        auto val2 = new String!byte(cast(byte[])"2");
         fs.createFile(name);
         fs.setFile(name, val.dup);
         fs.appendToFile(name, val2);
@@ -146,8 +146,8 @@ class FileSystem : IFileSystem {
         // Test that filesystem can be edited by other objects
         FileSystem fs = new FileSystem();
         string name = "name";
-        auto val = new String!char("test");
-        auto val2 = new String!char("2");
+        auto val = new String!byte(cast(byte[])"test");
+        auto val2 = new String!byte(cast(byte[])"2");
         fs.createFile(name);
         fs.setFile(name, val.dup);
 

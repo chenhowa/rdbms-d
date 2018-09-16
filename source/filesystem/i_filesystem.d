@@ -10,7 +10,7 @@ interface IFileSystem {
     bool createFile(string name);
     bool deleteFile(string name);
     bool renameFile(string name, string newName);
-    bool setFile(string name, String!char contents);
-    String!char getFile(string name);
-    bool appendToFile(string name, String!char contents);
+    bool setFile(string name, String!byte contents);
+    String!byte getFile(string name);
+    bool appendToFile(string name, String!byte contents);
 }

@@ -15,7 +15,7 @@ import mock_byte_reader;
 class MockTempFileManager : ITempFileManager {
     private {
         IFileSystem fs;
-        String!char[ulong] tmpfiles;
+        String!byte[ulong] tmpfiles;
     }
 
     this() {
