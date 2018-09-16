@@ -5,5 +5,5 @@
 
 interface IByteSource {
     byte get();
-    uint read();
+    uint read(byte[] container);
 }

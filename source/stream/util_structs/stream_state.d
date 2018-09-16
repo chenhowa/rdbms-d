@@ -1,5 +1,5 @@
 
-
+import as = assert_utils;
 
 
 struct StreamState {
@@ -19,6 +19,22 @@ struct StreamState {
         return !badbit && !failbit;
     }
 
+    unittest {
+        auto state = StreamState();
+        as.assertTrue(state.valid());
+        as.assertTrue(state.good());
+        as.assertFalse(state.eof());
+
+        state.setBad(true);
+        as.assertFalse(state.good());
+        as.assertFalse(state.valid());
+
+        state.setBad(false);
+        state.setEof(true);
+        as.assertTrue(state.good());
+        as.assertFalse(state.valid());
+    }
+
     bool eof() {
         return eofbit;
     }
@@ -26,6 +42,7 @@ struct StreamState {
     bool bad() {
         return badbit;
     }
+
 
     bool fail() {
         return failbit;

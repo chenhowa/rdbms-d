@@ -5,5 +5,5 @@
 
 interface IByteSink {
     bool put(byte b);
-    uint write();
+    uint write(byte[] stuff);
 }
